@@ -88,6 +88,23 @@ static __strong NSMutableArray *allSerialPorts;
 @property (nonatomic) dispatch_queue_t requestHandlingQueue;
 #endif
 
+    // private interface to fix XCODE 12 errors.
+    + (io_object_t) deviceFromBSDPath:(NSString *)bsdPath;
+    + (NSString *) bsdCalloutPathFromDevice:(io_object_t)aDevice;
+    + (NSString *) modemNameFromDevice:(io_object_t)aDevice;
+
+    /**
+     *  ORSSerialPort must be init'd using -initWithPath:
+     */
+    - (instancetype) init;
+    - (void) reallyClosePort;
+
+     - (void) notifyDelegateOfPosixError;
+    - (void) notifyDelegateOfPosixErrorWaitingUntilDone:(BOOL)shouldWait;
+    - (void) setPortOptions;
+    - (void) updateModemLines;
+    - (void) receiveData:(NSData *)data;
+
 @end
 
 @implementation ORSSerialPort
